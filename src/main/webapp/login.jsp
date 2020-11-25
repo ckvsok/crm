@@ -1,7 +1,8 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
 String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
 %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <base href="<%=basePath%>">
@@ -12,6 +13,10 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
     <script type="text/javascript">
 
         $(function (){
+            if(window.top!=window){
+                window.top.location = window.location;
+            }
+
             $("#loginAct").val("");
             $("#loginAct").focus();
             $("#submitBtn").click(function () {
@@ -34,22 +39,19 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             $.ajax({
                 url : "settings/user/login.do",
                 data : {
-                    "loginAct" : loginAct;
-                    "loginPwd" : loginPsd;
+                    "loginAct" : loginAct,
+                    "loginPwd" : loginPsd
                 },
                 type : "post",
                 dataType : "json",
                 success : function (data){
                     if(data.success){
-                        window.location.href = "workbench/index.html";
+                        window.location.href = "workbench/index.jsp";
                     }else{
                         $("#msg").html(data.msg);
                     }
                 }
-
-
             })
-
         }
 
 
@@ -70,7 +72,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <div class="page-header">
             <h1>登录</h1>
         </div>
-        <form action="workbench/index.html" class="form-horizontal" role="form">
+        <form action="workbench/index.jsp" class="form-horizontal" role="form">
             <div class="form-group form-group-lg">
                 <div style="width: 350px;">
                     <input id="loginAct" class="form-control" type="text" placeholder="用户名"">

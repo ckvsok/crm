@@ -20,10 +20,11 @@ public class UserServiceImpl implements UserService {
         map.put("loginPwd",loginPwd);
         User user = userDao.login(map);
         if(user==null){
-            throw new LoginException("账号密码错误");
+            throw new LoginException("账号不存在或者密码错误");
         }
         String expireTime= user.getExpireTime();
         String CurrentTime = DateTimeUtil.getSysTime();
+        //compareTo 可以比较字符串大小，返回值>0,大；返回值<0,小；
         if(CurrentTime.compareTo(CurrentTime)<0){
             throw new LoginException("账号已失效");
         }
@@ -35,10 +36,7 @@ public class UserServiceImpl implements UserService {
         String allowIps = user.getAllowIps();
         if (! allowIps.contains(ip)){
             throw new LoginException("ip受限制");
-
         }
-
-
         return user;
     }
 }
